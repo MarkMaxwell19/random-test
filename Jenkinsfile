@@ -1,7 +1,10 @@
-node ('win_server_auto_install') {
-    ws('jenkins-file-deployments') {
-        stage('Init') {
-            cleanWs()
+pipeline {
+    agent any
+    stages {
+        stage('Example') {
+            steps {
+                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+            }
         }
     }
 }
