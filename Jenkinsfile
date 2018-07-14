@@ -13,7 +13,7 @@ node {
                     return 'Basic $encodedCreds'
                 }
                
-                EncodeBasicAuthToken
+                Write-Host EncodeBasicAuthToken
             """)
         }
     }
