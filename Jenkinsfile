@@ -2,8 +2,6 @@ node {
     try{
         stage('build') {
             powershell("""
-                [Net.ServicePointManager]::SecurityProtocol = 'tls12'
-                
                 function EncodeBasicAuthToken
                 {
                     $Username = $ENV:GitPass.User
@@ -19,9 +17,6 @@ node {
     }
     catch (e)
     {
-        powershell("""
-        
-        Write-host 'Failed'
-        """)
+        powershell(""" Write-host 'Failed' """)
     }
 }
