@@ -30,6 +30,6 @@ node {
     }
     catch (e)
     {
-        powershell(Write-host 'Failed')
+        powershell "Write-host 'Failed'"
     }
 }
