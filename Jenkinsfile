@@ -8,10 +8,11 @@ node {
                 {
                     $Username = $ENV:GitPass.User
                     $Password = $ENV:GITPass.Password
-                    $pair = '$($Username):$($Password)'
+                    $pair = "$($Username):$($Password)"
                     $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
-                    return 'Basic $encodedCreds'
+                    return "Basic $encodedCreds"
                 }
+                '
                 
                 'function Send-Status'
                 {
