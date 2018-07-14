@@ -1,10 +1,9 @@
-pipeline {
-  agent any
-  stages {
+node {
     stage('Example') {
-      steps {
-        echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
-      }
+        if (env.BRANCH_NAME == 'master') {
+            echo 'I only execute on the master branch'
+        } else {
+            echo 'I execute elsewhere'
+        }
     }
-  }
 }
