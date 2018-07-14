@@ -6,8 +6,8 @@ node {
 
                 function EncodeBasicAuthToken
                 {
-                    $Username = "markmaxwell19"
-                    $Password = "999772bfcda7f6cf213c8fdf731bda45ef7c7bda"
+                    $Username = $ENV:GitPass.User
+                    $Password = $ENV:GITPass.Password
                     $pair = "$($Username):$($Password)"
                     $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
                     return "Basic $encodedCreds"
