@@ -2,7 +2,7 @@ node {
     try{
         stage('build') {
             powershell(
-            [Net.ServicePointManager]::SecurityProtocol = 'tls12'
+            '[Net.ServicePointManager]::SecurityProtocol = "tls12"'
 
                 function EncodeBasicAuthToken
                 {
