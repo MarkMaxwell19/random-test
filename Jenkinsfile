@@ -1,11 +1,11 @@
 node {
     try{
         stage('build') {
-            powershell(""" Write-Host 'good' """)
+            powershell( Write-Host 'good')
         }
     }
     catch (e)
     {
-        powershell(""" Write-host 'Failed' """)
+        powershell(Write-host 'Failed')
     }
 }
