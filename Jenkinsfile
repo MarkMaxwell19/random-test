@@ -82,7 +82,15 @@ node {
                         }
                     }
                 }
-           
+                
+                $Repo = 'markmaxwell19/random-test'
+                $ENV:PRNumber = 6
+
+                # Get current building commit
+                $PRHead = (Get-PR -Repo $Repo -PR $ENV:PRNumber).head.sha
+                Write-Host 'The PR head is $PRHead'
+                Send-Status -Action 'Initialize' -Repo $Repo -PR $ENV:PRNumber -PRHead $PRHead -JenkinsUrl 'http://localhost:8080/job/BenTestPOC/build?token=SecretToken'
+
             """)
         }
     }
