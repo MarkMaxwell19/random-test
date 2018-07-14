@@ -1,15 +1,15 @@
 node {
     try{
         stage('build') {
-            powershell(
-                '[Net.ServicePointManager]::SecurityProtocol = "tls12"'
+            powershell(returnStdout: true, script:"""
+                [Net.ServicePointManager]::SecurityProtocol = 'tls12'
                 
-                '$Commit = $ENV:GIT_COMMIT'
+                $Commit = $ENV:GIT_COMMIT
                 $Repo = 'markmaxwell19/random-test'
                 $Username = $ENV:GitPass.User
                 $Password = $ENV:GITPass.Password
                 $pair = '$($Username):$($Password)'
-                '$encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))'
+                $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
                 $Token = "Basic $encodedCreds"
     
                 $Headers = @{ Authorization = EncodeBasicAuthToken
@@ -25,7 +25,7 @@ node {
                 Write-Host 'Sending initialization status for commit $PRHead to https://api.github.com/repos/$Repo/statuses/$Commit'
 
                 $response = (curl -Uri 'https://api.github.com/repos/$Repo/statuses/$Commit' -Body $Body -Method Post -Headers $Headers -UseBasicParsing )
-            )
+            """)
         }
     }
     catch (e)
