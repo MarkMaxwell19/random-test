@@ -4,7 +4,7 @@ node {
             powershell(
                 '[Net.ServicePointManager]::SecurityProtocol = "tls12"'
                 
-                $Commit = $ENV:GIT_COMMIT
+                '$Commit = $ENV:GIT_COMMIT'
                 $Repo = 'markmaxwell19/random-test'
                 $Username = $ENV:GitPass.User
                 $Password = $ENV:GITPass.Password
