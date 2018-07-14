@@ -97,7 +97,7 @@ node {
     {
         powershell("""
         
-        
+        Write-host 'Failed'
         """)
     }
 }
