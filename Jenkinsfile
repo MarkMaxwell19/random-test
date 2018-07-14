@@ -4,7 +4,7 @@ node {
             powershell(
             '[Net.ServicePointManager]::SecurityProtocol = "tls12"'
 
-                function EncodeBasicAuthToken
+                'function EncodeBasicAuthToken'
                 {
                     $Username = $ENV:GitPass.User
                     $Password = $ENV:GITPass.Password
@@ -13,7 +13,7 @@ node {
                     return 'Basic $encodedCreds'
                 }
                 
-                function Send-Status
+                'function Send-Status'
                 {
                     param(
                         [String]$Action,
