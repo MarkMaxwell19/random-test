@@ -10,15 +10,13 @@ node {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ]
                     )
-                Token = map_vars.GIT_COMMIT
-                print Token
+                Commit = map_vars.GIT_COMMIT
             } 
             stage('build') {
                 bat 'echo %GIT_LOCAL_BRANCH%'
                 def stdout = powershell(script:'''
                     [Net.ServicePointManager]::SecurityProtocol = 'tls12'
-
-                    $Commit = $ENV:GIT_BRANCH
+                    
                     $Repo = 'markmaxwell19/random-test'
                     $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($ENV:GITCREDS))
                     $Token = "Basic $encodedCreds"
