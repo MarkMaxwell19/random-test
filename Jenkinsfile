@@ -12,7 +12,7 @@ node {
                 $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
                 $Token = "Basic $encodedCreds"
     
-                $Headers = @{ Authorization = EncodeBasicAuthToken
+                $Headers = @{ Authorization = $Token
                                 Accept = 'application/vnd.github.howard-the-duck-preview+json'}
                 
                 # Send the intail response so a user can intiate a build using the Details button in GitHub.
