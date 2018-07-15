@@ -11,6 +11,7 @@ node {
                         ]
                     )
                 Commit = map_vars.GIT_COMMIT
+                print Commit
             } 
             stage('build') {
                 bat 'echo %GIT_LOCAL_BRANCH%'
@@ -21,7 +22,7 @@ node {
                     $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($ENV:GITCREDS))
                     $Token = "Basic $encodedCreds"
                     Write-output $Token
-                    write-output $Commit
+                    write-output $ENV:Commit
 
                     #$Headers = @{ Authorization = $Token
                     #                Accept = 'application/vnd.github.howard-the-duck-preview+json'}
