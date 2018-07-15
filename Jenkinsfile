@@ -33,7 +33,7 @@ node {
 
                     Write-output ("Sending initialization status for commit " + $Commit + "  to https://api.github.com/repos/$Repo/statuses/" + $Commit)
 
-                    $response = (curl -Uri "https://api.github.com/repos/" + $Repo + "/statuses/" + $Commit -Body $Body -Method Post -Headers $Headers -UseBasicParsing )
+                    $response = (curl -Uri ("https://api.github.com/repos/" + $Repo + "/statuses/" + $Commit) -Body $Body -Method Post -Headers $Headers -UseBasicParsing )
                 ''')
                 println stdout
             }
