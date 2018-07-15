@@ -1,6 +1,5 @@
 node {
     withCredentials([usernameColonPassword(credentialsId: 'github-accessToken', variable: 'GITCREDS')]) {
-        try{
             stage ("Clone sources") {
                     // A custom checkout is needed to increase the clone timeout:
                     checkout(
@@ -40,10 +39,5 @@ node {
                 ''')
                 println stdout
             }
-        }
-        catch (e)
-        {
-            echo "hello"
-        }
     }
 }
