@@ -22,7 +22,7 @@ node {
                     #            context = 'continuous-integration/BenTest'
                     #            })| ConvertTo-Json
 
-                    Write-output "Sending initialization status for commit " + $Commit + "  to https://api.github.com/repos/$Repo/statuses/" + $Commit
+                    Write-output ("Sending initialization status for commit " + $Commit + "  to https://api.github.com/repos/$Repo/statuses/" + $Commit)
 
                     #$response = (curl -Uri "https://api.github.com/repos/" + $Repo + "/statuses/" + $Commit -Body $Body -Method Post -Headers $Headers -UseBasicParsing )
                 ''')
