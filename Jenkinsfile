@@ -1,5 +1,5 @@
 node {
-    withCredentials([string(credentialsId: 'markmaxwell19 Git', variable: 'GITCREDS')]) {
+    withCredentials([string(usernameColonPassword: 'markmaxwell19 Git', variable: 'GITCREDS')]) {
         try{
             stage('build') {
                 echo GitCreds
