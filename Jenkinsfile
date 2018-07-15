@@ -12,6 +12,7 @@ node {
                 Write-Host $pair
                 $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
                 $Token = "Basic $encodedCreds"
+                Write-Host $Token
     
                 $Headers = @{ Authorization = $Token
                                 Accept = 'application/vnd.github.howard-the-duck-preview+json'}
