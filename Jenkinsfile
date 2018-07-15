@@ -5,7 +5,7 @@ node {
                 def stdout = powershell(script:'''
                     [Net.ServicePointManager]::SecurityProtocol = 'tls12'
 
-                    $Commit = $ENV:GIT_COMMIT
+                    $Commit = $ENV:GIT_BRANCH
                     $Repo = 'markmaxwell19/random-test'
                     $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($ENV:GITCREDS))
                     $Token = "Basic $encodedCreds"
