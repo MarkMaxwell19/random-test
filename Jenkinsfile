@@ -6,9 +6,7 @@ node {
                 
                 $Commit = $ENV:GIT_COMMIT
                 $Repo = 'markmaxwell19/random-test'
-                $Username = $ENV:GitPass.User
-                $Password = $ENV:GITPass.Password
-                $pair = $Username + ':' + $Password
+                $pair = ''' + credentials('markmaxwell19 Git') + '''
                 Write-output $pair
                 $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
                 $Token = "Basic $encodedCreds"
