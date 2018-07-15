@@ -11,7 +11,6 @@ node {
                         ]
                     )
                 Commit = map_vars.GIT_COMMIT
-                print map_vars["GIT_COMMIT"]
                 print Commit
             } 
             stage('build') {
@@ -30,11 +29,11 @@ node {
                     # Send the intail response so a user can intiate a build using the Details button in GitHub.
                     #$Body = (@{ state = 'pending'
                     #            target_url = 'http://localhost:8080/job/BenTestPOC/build?token=SecretToken'
-                    #            description = 'Click Details to Start build for ' + [string] $Commit
+                    #            description = 'Click Details to Start build for ' + $ENV:Commit
                     #            context = 'continuous-integration/BenTest'
                     #            })| ConvertTo-Json
 
-                    Write-output ("Sending initialization status for commit " + $Commit + "  to https://api.github.com/repos/$Repo/statuses/" + $Commit)
+                    Write-output ("Sending initialization status for commit " + $ENV:Commit + "  to https://api.github.com/repos/$Repo/statuses/" + $ENV:Commit)
 
                     #$response = (curl -Uri "https://api.github.com/repos/" + $Repo + "/statuses/" + $Commit -Body $Body -Method Post -Headers $Headers -UseBasicParsing )
                 ''')
