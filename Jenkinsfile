@@ -1,7 +1,7 @@
 node {
     try{
         stage('build') {
-            powershell(returnStdout: true, script:"""
+            def stdout = powershell(returnStdout: true, script:'''
                 [Net.ServicePointManager]::SecurityProtocol = 'tls12'
                 
                 $Commit = $ENV:GIT_COMMIT
@@ -25,7 +25,8 @@ node {
                 Write-Host 'Sending initialization status for commit $PRHead to https://api.github.com/repos/$Repo/statuses/$Commit'
 
                 $response = (curl -Uri 'https://api.github.com/repos/$Repo/statuses/$Commit' -Body $Body -Method Post -Headers $Headers -UseBasicParsing )
-            """)
+            ''')
+            println stdout
         }
     }
     catch (e)
