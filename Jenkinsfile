@@ -1,6 +1,21 @@
 node {
     withCredentials([usernameColonPassword(credentialsId: 'github-accessToken', variable: 'GITCREDS')]) {
         try{
+            stage ("Clone sources") {
+                dir('work-server') {
+                    // A custom checkout is needed to increase the clone timeout:
+                    map_vars = checkout(
+                        [
+                            $class: 'GitSCM',
+                            branches: scm.branches,
+                            extensions: scm.extensions + [[$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false, timeout: 20]],
+                            userRemoteConfigs: scm.userRemoteConfigs
+                        ]
+                    )
+                    
+                    print map_vars
+                }
+            } 
             stage('build') {
                 bat 'echo %GIT_LOCAL_BRANCH%'
                 def stdout = powershell(script:'''
