@@ -9,6 +9,7 @@ node {
                 $Username = $ENV:GitPass.User
                 $Password = $ENV:GITPass.Password
                 $pair = '$Username:$Password'
+                Write-Host $pair
                 $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
                 $Token = "Basic $encodedCreds"
     
