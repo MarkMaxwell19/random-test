@@ -10,7 +10,8 @@ node {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ]
                     )
-                print map_vars
+                Token = map_vars.GIT_COMMIT
+                print Token
             } 
             stage('build') {
                 bat 'echo %GIT_LOCAL_BRANCH%'
