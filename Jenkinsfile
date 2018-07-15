@@ -9,10 +9,10 @@ node {
                 $Username = $ENV:GitPass.User
                 $Password = $ENV:GITPass.Password
                 $pair = '$($Username):$($Password)'
-                Write-Host $pair
+                Write-output $pair
                 $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
                 $Token = "Basic $encodedCreds"
-                Write-Host $Token
+                Write-output $Token
     
                 $Headers = @{ Authorization = $Token
                                 Accept = 'application/vnd.github.howard-the-duck-preview+json'}
