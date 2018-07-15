@@ -5,6 +5,7 @@ node {
     }
     try{
         stage('build') {
+            echo GitCreds
             def stdout = powershell(script:'''
                 [Net.ServicePointManager]::SecurityProtocol = 'tls12'
                 
