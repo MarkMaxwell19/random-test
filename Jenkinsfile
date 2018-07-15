@@ -11,7 +11,6 @@ node {
                         ]
                     )
                 Commit = map_vars.GIT_COMMIT
-                print Commit
             } 
             stage('build') {
                 def stdout = powershell(script:'''
@@ -21,7 +20,7 @@ node {
                     $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($ENV:GITCREDS))
                     $Token = "Basic $encodedCreds"
                     Write-output $Token
-                    write-output $ENV:Commit
+                    write-output ''' + Commit + '''
 
                     #$Headers = @{ Authorization = $Token
                     #                Accept = 'application/vnd.github.howard-the-duck-preview+json'}
