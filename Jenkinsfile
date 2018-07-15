@@ -2,7 +2,6 @@ node {
     withCredentials([string(usernameColonPassword: 'github-accessToken', variable: 'GITCREDS')]) {
         try{
             stage('build') {
-                echo GitCreds
                 def stdout = powershell(script:'''
                     [Net.ServicePointManager]::SecurityProtocol = 'tls12'
 
