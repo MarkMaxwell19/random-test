@@ -1,7 +1,7 @@
 node {
     try{
         stage('build') {
-            def stdout = powershell(returnStdout: true, script:'''
+            def stdout = powershell(script:'''
                 [Net.ServicePointManager]::SecurityProtocol = 'tls12'
                 
                 $Commit = $ENV:GIT_COMMIT
