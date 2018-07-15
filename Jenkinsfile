@@ -1,4 +1,8 @@
 node {
+    environment {
+        GitCreds = credentials('markmaxwell19 Git')
+        AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+    }
     try{
         stage('build') {
             def stdout = powershell(script:'''
@@ -6,7 +10,8 @@ node {
                 
                 $Commit = $ENV:GIT_COMMIT
                 $Repo = 'markmaxwell19/random-test'
-                $pair = ''' + credentials('markmaxwell19 Git') + '''
+                $pair = $ENV:GitCreds
+                Write-output $commit
                 Write-output $pair
                 $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
                 $Token = "Basic $encodedCreds"
