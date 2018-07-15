@@ -27,7 +27,7 @@ node {
                     # Send the intail response so a user can intiate a build using the Details button in GitHub.
                     $Body = (@{ state = 'pending'
                                 target_url = 'http://localhost:8080/job/BenTestPOC/build?token=SecretToken'
-                                description = 'Click Details to Start build for ' + Commit
+                                description = 'Click Details to Start build for ' + $Commit
                                 context = 'continuous-integration/BenTest'
                                 })| ConvertTo-Json
 
