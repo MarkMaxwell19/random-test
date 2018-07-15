@@ -19,7 +19,7 @@ node {
                     $Repo = 'markmaxwell19/random-test'
                     $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($ENV:GITCREDS))
                     $Token = "Basic $encodedCreds"
-                    $Commit = ''' + Commit + '''
+                    $Commit = "''' + Commit + '''"
 
                     $Headers = @{ Authorization = $Token
                                     Accept = 'application/vnd.github.howard-the-duck-preview+json'}
