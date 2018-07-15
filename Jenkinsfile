@@ -7,10 +7,10 @@ node {
 
                     $Commit = $ENV:GIT_COMMIT
                     $Repo = 'markmaxwell19/random-test'
-                    write-output $ENV:GIT_COMMIT
                     $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($ENV:GITCREDS))
                     $Token = "Basic $encodedCreds"
                     Write-output $Token
+                    write-output $Commit
 
                     $Headers = @{ Authorization = $Token
                                     Accept = 'application/vnd.github.howard-the-duck-preview+json'}
