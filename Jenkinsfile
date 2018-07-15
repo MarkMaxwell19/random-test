@@ -1,5 +1,5 @@
 node {
-    withCredentials([string(usernameColonPassword: 'github-accessToken', variable: 'GITCREDS')]) {
+    withCredentials([usernameColonPassword(credentialsId: 'github-accessToken', variable: 'GITCREDS')]) {
         try{
             stage('build') {
                 def stdout = powershell(script:'''
