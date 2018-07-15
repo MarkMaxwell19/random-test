@@ -2,7 +2,6 @@ node {
     withCredentials([usernameColonPassword(credentialsId: 'github-accessToken', variable: 'GITCREDS')]) {
         try{
             stage ("Clone sources") {
-                dir('work-server') {
                     // A custom checkout is needed to increase the clone timeout:
                     checkout(
                         [
@@ -12,7 +11,6 @@ node {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ]
                     )
-                }
             } 
             stage('build') {
                 bat 'echo %GIT_LOCAL_BRANCH%'
