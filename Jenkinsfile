@@ -8,7 +8,7 @@ node {
                 $Repo = 'markmaxwell19/random-test'
                 $Username = $ENV:GitPass.User
                 $Password = $ENV:GITPass.Password
-                $pair = "$($Username):$($Password)"
+                $pair = "$Username:$Password"
                 Write-output $pair
                 $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
                 $Token = "Basic $encodedCreds"
