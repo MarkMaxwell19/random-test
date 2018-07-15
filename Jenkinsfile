@@ -4,7 +4,7 @@ node {
             stage ("Clone sources") {
                 dir('work-server') {
                     // A custom checkout is needed to increase the clone timeout:
-                    map_vars = checkout(
+                    checkout(
                         [
                             $class: 'GitSCM',
                             branches: scm.branches,
@@ -12,8 +12,6 @@ node {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ]
                     )
-                    
-                    print map_vars
                 }
             } 
             stage('build') {
