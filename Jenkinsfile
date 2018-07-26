@@ -26,12 +26,12 @@ node {
 
                     # Send the intail response so a user can intiate a build using the Details button in GitHub.
                     $Body = (@{ state = 'pending'
-                                target_url = 'http://localhost:8080/job/BenTestPOC/build?token=SecretToken'
+                                target_url = 'http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?CommitNumber=' + $Commit
                                 description = 'Click Details to Start build for ' + $Commit
-                                context = 'continuous-integration/BenTest'
+                                context = 'continuous-integration/RESTAPI'
                                 })| ConvertTo-Json
 
-                    Write-output ("Sending initialization status for commit " + $Commit + "  to https://api.github.com/repos/$Repo/statuses/" + $Commit)
+                    Write-output ("Sending initialization status for commit " + $Commit + " to https://api.github.com/repos/$Repo/statuses/" + $Commit)
 
                     $response = (curl -Uri ("https://api.github.com/repos/" + $Repo + "/statuses/" + $Commit) -Body $Body -Method Post -Headers $Headers -UseBasicParsing )
                 ''')
