@@ -31,7 +31,7 @@ node {
 						postToArtifactory("https://artifacts.imanage.com/artifactory/commons-set-local/DeployScripts/Alpha/" + Commit + ".zip", pwd() + "/server.zip")
 					}
 
-				if (false)
+				if (true)
 				{
 					println Branch.replace("PR-","")
 					println "Commit: ${Commit}"
