@@ -40,7 +40,7 @@ node {
 				else
 				{
 					println "Triggering RESTAPI Test on Branch Merge"
-					triggerRemoteJob auth: NoneAuth(), job: 'http://localhost:8080/job/test/', maxConn: 1, parameters: 'PRNumber=${Branch} Commit=${Commit}', shouldNotFailBuild: true, token: 'Litigation11'
+					triggerRemoteJob auth: NoneAuth(), job: 'http://localhost:8080/job/test/', maxConn: 1, parameters: "PRNumber=${Branch} Commit=${Commit}", shouldNotFailBuild: true, token: 'Litigation11'
 				}
 			}
 			
