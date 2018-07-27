@@ -1,8 +1,19 @@
 node {
-    withCredentials([usernameColonPassword(credentialsId: 'github-accessToken', variable: 'GITCREDS')]) {
+    // We have to checkout to a workspace with a shorted path to get around windows path name restrictions.
+    // This also has a side benefit of ensuring that the worker will only use the amount of disk space
+    // needed for a single build. The downside is that we can never run concurrent builds on this worker
+    // and the workspaces are lost after the next build runs
+    ws("C:\\wsws") {
+        notify('warning', "STARTED")
+
+        try {
+            stage ("Clean Workspace") {
+                deleteDir()
+            }
+            
             stage ("Clone sources") {
-                    // A custom checkout is needed to increase the clone timeout:
-                map_vars = checkout(
+                dir('work-server') {
+                    checkout(
                         [
                             $class: 'GitSCM',
                             branches: scm.branches,
@@ -10,35 +21,55 @@ node {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ]
                     )
-                Branch = map_vars.GIT_BRANCH
-                LocalBranch = map_vars.GIT_LOCAL_BRANCH
-                Commit = map_vars.GIT_COMMIT
+                }
             } 
-            stage('build') {
-                def stdout = powershell(script:'''
-                    [Net.ServicePointManager]::SecurityProtocol = 'tls12'
-                    Write-output "This is branch: ''' + Branch + '''"
-                    Write-output "This is local: ''' + LocalBranch + '''"
-                    $Repo = 'markmaxwell19/random-test'
-                    $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($ENV:GITCREDS))
-                    $Token = "Basic $encodedCreds"
-                    $Commit = "''' + Commit + '''"
 
-                    $Headers = @{ Authorization = $Token
-                                    Accept = 'application/vnd.github.howard-the-duck-preview+json'}
+            stage ("Build") {
+                    dir('CIBuild') {					
+						postToArtifactory("https://artifacts.imanage.com/artifactory/commons-set-local/DeployScripts/Alpha/" + env.GIT_COMMIT + ".zip", pwd() + "/server.zip")
+					}
+				}
 
-                    # Send the intail response so a user can intiate a build using the Details button in GitHub.
-                    $Body = (@{ state = 'pending'
-                                target_url = 'http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?CommitNumber=' + $Commit
-                                description = 'Click Details to Start build for ' + $Commit
-                                context = 'continuous-integration/RESTAPI'
-                                })| ConvertTo-Json
-
-                    Write-output ("Sending initialization status for commit " + $Commit + " to https://api.github.com/repos/$Repo/statuses/" + $Commit)
-
-                    $response = (curl -Uri ("https://api.github.com/repos/" + $Repo + "/statuses/" + $Commit) -Body $Body -Method Post -Headers $Headers -UseBasicParsing )
-                ''')
-                println stdout
-            }
+				if env.GIT_BRANCH.match("PR-*")
+				{
+					githubNotify account: 'proboy2009', context: '', credentialsId: 'github-accessToken', description: 'Click Details to manually start the test.', gitApiUrl: '', repo: 'markmaxwell19/random-test', sha: env.GIT_COMMIT, status: 'PENDING', targetUrl: 'http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?CommitNumber=' + env.GIT_COMMIT
+				}
+				else
+				{
+					println "Triggering RESTAPI Test on Branch Merge"
+					triggerRemoteJob auth: NoneAuth(), job: 'http://localhost:8080/job/test/', maxConn: 1, parameters: '''PRNumber=${env.GIT_BRANCH} Commit=${env.GIT_COMMIT}''', shouldNotFailBuild: true, token: 'Litigation11'
+				}
+			}
+			
+            notify('good', 'SUCCESS')
+        
+        } catch (e) {
+            currentBuild.result = "FAILED"
+            notify('danger', 'FAILED')
+            throw e
+        }
     }
+}
+
+def notify(color, message) {
+	println message
+}
+
+def postToArtifactory(source,dest)
+{
+	withCredentials([usernameColonPassword(credentialsId: 'artifactory_set_username_password', variable: 'ARTIFACTORYCREDS')]) {
+		def stdout = powershell(script:'''
+                    [Net.ServicePointManager]::SecurityProtocol = 'tls12'
+                    
+                    $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($ENV:ARTIFACTORYCREDS))
+                    $Token = "Basic $encodedCreds"
+                    $Headers = @{ Authorization = $Token}
+
+                    # Upload the file to Artifactory
+                    Write-output ("Uploading file ''' + dest + ''' to ''' + source + '''")
+
+                    #$response = (Invoke-WebRequest -Uri "''' + source + '''" -Method Put -InFile "''' + dest + '''" -Headers $Headers -UseBasicParsing)
+                ''')
+        println stdout
+	}
 }
