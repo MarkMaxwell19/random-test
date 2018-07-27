@@ -33,7 +33,7 @@ node {
 
 				if (true)
 				{
-					println """${Branch.replace('PR-','')}"
+					println """${Branch.replace('PR-','')}"""
 					println "Commit: ${Commit}"
 					githubNotify account: 'markmaxwell19', context: 'continuous-integration/RESTAPI', credentialsId: 'github-accessToken', description: 'Click Details to manually start the test.', gitApiUrl: '', repo: 'random-test', sha: "${Commit}", status: 'PENDING', targetUrl: "http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?CommitNumber=${Commit}"
 				}
