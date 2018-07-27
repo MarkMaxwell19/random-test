@@ -22,6 +22,7 @@ node {
                         ]
                     )
 					Commit = env_map.GIT_COMMIT
+					Branch = env_map.GIT_BRANCH
                 }
             } 
 
@@ -30,14 +31,14 @@ node {
 						postToArtifactory("https://artifacts.imanage.com/artifactory/commons-set-local/DeployScripts/Alpha/" + Commit + ".zip", pwd() + "/server.zip")
 					}
 
-				if (env.GIT_BRANCH.match("PR-*"))
+				if (Branch.match("PR-*"))
 				{
 					githubNotify account: 'proboy2009', context: '', credentialsId: 'github-accessToken', description: 'Click Details to manually start the test.', gitApiUrl: '', repo: 'markmaxwell19/random-test', sha: Commit, status: 'PENDING', targetUrl: 'http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?CommitNumber=' + Commit
 				}
 				else
 				{
 					println "Triggering RESTAPI Test on Branch Merge"
-					triggerRemoteJob auth: NoneAuth(), job: 'http://localhost:8080/job/test/', maxConn: 1, parameters: '''PRNumber=${env.GIT_BRANCH} Commit=${Commit}''', shouldNotFailBuild: true, token: 'Litigation11'
+					triggerRemoteJob auth: NoneAuth(), job: 'http://localhost:8080/job/test/', maxConn: 1, parameters: '''PRNumber=${Branch} Commit=${Commit}''', shouldNotFailBuild: true, token: 'Litigation11'
 				}
 			}
 			
