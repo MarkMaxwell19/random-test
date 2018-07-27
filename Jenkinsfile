@@ -28,7 +28,6 @@ node {
                     dir('CIBuild') {					
 						postToArtifactory("https://artifacts.imanage.com/artifactory/commons-set-local/DeployScripts/Alpha/" + env.GIT_COMMIT + ".zip", pwd() + "/server.zip")
 					}
-				}
 
 				if (env.GIT_BRANCH.match("PR-*"))
 				{
@@ -42,7 +41,9 @@ node {
 			}
 			
             notify('good', 'SUCCESS')
-        
+			
+
+            
         } catch (e) {
             currentBuild.result = "FAILED"
             notify('danger', 'FAILED')
