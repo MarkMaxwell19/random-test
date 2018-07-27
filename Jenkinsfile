@@ -34,7 +34,7 @@ node {
 				if (true)
 				{
 					println "Sending status to ${Branch}"
-					githubNotify account: 'proboy2009', context: '', credentialsId: 'github-accessToken', description: 'Click Details to manually start the test.', gitApiUrl: '', repo: 'markmaxwell19/random-test', sha: Commit, status: 'PENDING', targetUrl: 'http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?CommitNumber=' + Commit
+					githubNotify account: 'proboy2009', context: '', credentialsId: 'github-accessToken', description: 'Click Details to manually start the test.', repo: 'markmaxwell19/random-test', sha: "${Commit}", status: 'PENDING', targetUrl: "http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?CommitNumber=${Commit}"
 				}
 				else
 				{
