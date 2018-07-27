@@ -33,10 +33,7 @@ node {
 
 				if (true)
 				{
-					println "Branch to ${Branch}"
-					println "Commit to ${Commit}"
-					
-					githubNotify account: 'proboy2009', context: '', credentialsId: 'github-accessToken', description: 'Click Details to manually start the test.', repo: 'MarkMaxwell19/random-test', sha: "${Commit}", status: 'PENDING', targetUrl: "http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?CommitNumber=${Commit}"
+					githubNotify account: 'markmaxwell19', context: '', credentialsId: 'github-accessToken', description: 'Click Details to manually start the test.', gitApiUrl: '', repo: 'random-test', sha: Commit, status: 'PENDING', targetUrl: 'http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?CommitNumber=' + Commit
 				}
 				else
 				{
