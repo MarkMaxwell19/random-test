@@ -13,7 +13,7 @@ node {
             
             stage ("Clone sources") {
                 dir('work-server') {
-                    checkout(
+                    env_map = checkout(
                         [
                             $class: 'GitSCM',
                             branches: scm.branches,
@@ -21,22 +21,23 @@ node {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ]
                     )
+					Commit = env_map.GIT_COMMIT
                 }
             } 
 
             stage ("Build") {
                     dir('CIBuild') {					
-						postToArtifactory("https://artifacts.imanage.com/artifactory/commons-set-local/DeployScripts/Alpha/" + env.GIT_COMMIT + ".zip", pwd() + "/server.zip")
+						postToArtifactory("https://artifacts.imanage.com/artifactory/commons-set-local/DeployScripts/Alpha/" + Commit + ".zip", pwd() + "/server.zip")
 					}
 
 				if (env.GIT_BRANCH.match("PR-*"))
 				{
-					githubNotify account: 'proboy2009', context: '', credentialsId: 'github-accessToken', description: 'Click Details to manually start the test.', gitApiUrl: '', repo: 'markmaxwell19/random-test', sha: env.GIT_COMMIT, status: 'PENDING', targetUrl: 'http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?CommitNumber=' + env.GIT_COMMIT
+					githubNotify account: 'proboy2009', context: '', credentialsId: 'github-accessToken', description: 'Click Details to manually start the test.', gitApiUrl: '', repo: 'markmaxwell19/random-test', sha: Commit, status: 'PENDING', targetUrl: 'http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?CommitNumber=' + Commit
 				}
 				else
 				{
 					println "Triggering RESTAPI Test on Branch Merge"
-					triggerRemoteJob auth: NoneAuth(), job: 'http://localhost:8080/job/test/', maxConn: 1, parameters: '''PRNumber=${env.GIT_BRANCH} Commit=${env.GIT_COMMIT}''', shouldNotFailBuild: true, token: 'Litigation11'
+					triggerRemoteJob auth: NoneAuth(), job: 'http://localhost:8080/job/test/', maxConn: 1, parameters: '''PRNumber=${env.GIT_BRANCH} Commit=${Commit}''', shouldNotFailBuild: true, token: 'Litigation11'
 				}
 			}
 			
