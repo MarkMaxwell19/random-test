@@ -31,7 +31,7 @@ node {
 						postToArtifactory("https://artifacts.imanage.com/artifactory/commons-set-local/DeployScripts/Alpha/" + Commit + ".zip", pwd() + "/server.zip")
 					}
 
-				if (true)
+				if (false)
 				{
 					println "Branch: ${Branch}"
 					println "Commit: ${Commit}"
