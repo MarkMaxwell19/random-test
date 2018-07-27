@@ -30,7 +30,7 @@ node {
 					}
 				}
 
-				if env.GIT_BRANCH.match("PR-*")
+				if (env.GIT_BRANCH.match("PR-*"))
 				{
 					githubNotify account: 'proboy2009', context: '', credentialsId: 'github-accessToken', description: 'Click Details to manually start the test.', gitApiUrl: '', repo: 'markmaxwell19/random-test', sha: env.GIT_COMMIT, status: 'PENDING', targetUrl: 'http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?CommitNumber=' + env.GIT_COMMIT
 				}
