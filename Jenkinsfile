@@ -33,13 +33,16 @@ node {
 
 				if (Branch =~'^PR-*')
 				{
-					githubNotify account: 'markmaxwell19', context: 'continuous-integration/RESTAPI', credentialsId: 'github-accessToken', description: 'Click Details to manually start the test.', gitApiUrl: '', repo: 'random-test', sha: "${Commit}", status: 'PENDING', targetUrl: "http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?CommitNumber=${Commit}"
+					githubNotify account: 'markmaxwell19', context: 'continuous-integration/RESTAPI', credentialsId: 'github-accessToken', description: 'Click Details to manually start the test.', gitApiUrl: '', repo: 'random-test', sha: "${Commit}", status: 'PENDING', targetUrl: "http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?PRNumber=${Branch.replace('PR-','')}&CommitNumber=${Commit}"
+					sleep 30
+					triggerRemoteJob auth: NoneAuth(), job: 'http://localhost:8080/job/10.2.0%20CI%20Test/', maxConn: 1, parameters: """PRNumber=${Branch.replace('PR-','')}
+CommitNumber=${Commit}""", shouldNotFailBuild: true, token: 'Litigation11', blockBuildUntilComplete: false
 				}
 				else
 				{
 					println "Triggering RESTAPI Test on Branch Merge"
-					triggerRemoteJob auth: NoneAuth(), job: 'http://localhost:8080/job/10.2.0%20CI%20Test/', maxConn: 1, parameters: """PRNumber=${Branch.replace('PR-','')}
-CommitNumber=${Commit}""", shouldNotFailBuild: true, token: 'Litigation11'
+					triggerRemoteJob auth: NoneAuth(), job: 'http://localhost:8080/job/10.2.0%20CI%20Test/', maxConn: 1, parameters: """PRNumber=${Branch}
+CommitNumber=${Commit}""", shouldNotFailBuild: true, token: 'Litigation11', blockBuildUntilComplete: false
 				}
 			}
 			
