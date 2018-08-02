@@ -23,7 +23,9 @@ node {
                     )
 					Commit = env_map.GIT_COMMIT
 					Branch = env_map.GIT_BRANCH
-		powershell(script:"""copy-item \$ENV:WORKSPACE1\\work-server \$ENV:WORKSPACE\\ -recurse -force""")
+		powershell(script:"""copy-item \$ENV:WORKSPACE1\\work-server \$ENV:WORKSPACE\\ -recurse -force
+				     copy-item \$ENV:WORKSPACE1\\RE_commons \$ENV:WORKSPACE\\ -recurse -force
+				     copy-item \$ENV:WORKSPACE1\\work-gmail-extension \$ENV:WORKSPACE\\ -recurse -force""")
                 }
             } 
 
