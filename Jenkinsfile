@@ -23,10 +23,28 @@ node {
                     )
 					Commit = env_map.GIT_COMMIT
 					Branch = env_map.GIT_BRANCH
+		powerShell(""" copy-item $ENV:WORKSPACE1\work-server $ENV:WORKSPACE\ -recursive -force""")
                 }
             } 
 
             stage ("Build") {
+		    withEnv(
+                    [
+                        "PATH=${env.PATH};C:\\Program Files\\Git\\usr\\bin",
+                        "ARTIFACT_PATH=C:\\Artifacts",
+                        "JOB_NAME=10.1.3 Server x64"
+                    ]
+                ) {
+                    dir('work-server/iserver/app/buildInstaller') {
+                        build_cmd = "" +
+                            """ant resolve setResourceProperties CIBuild """ +
+                            """-Dvs.path64.2017="C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\Common7\\IDE\\\\" """ +
+                            """-DskipMobility2=1"""
+                        echo "build_cmd=${build_cmd}"
+                        bat build_cmd
+                    }
+                }
+		    
                     dir('CIBuild') {					
 						postToArtifactory("https://artifacts.imanage.com/artifactory/commons-set-local/DeployScripts/Alpha/" + Commit + ".zip", pwd() + "/server.zip")
 					}
