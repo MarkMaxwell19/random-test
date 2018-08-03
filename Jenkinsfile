@@ -33,8 +33,8 @@ node {
 		    withEnv(
                     [
                         "PATH=${env.PATH};C:\\Program Files\\Git\\usr\\bin",
-                        "ARTIFACT_PATH=C:\\Artifacts",
-                        "JOB_NAME=10.1.3 Server x64"
+			"ARTIFACT_PATH=${env.WORKSPACE}\\Artifacts",
+                        "JOB_NAME=10.2.0 Server x64"
                     ]
                 ) {
                     dir('work-server/iserver/app/buildInstaller') {
@@ -47,22 +47,25 @@ node {
                     }
                 }
 		    
-                    dir('CIBuild') {					
-						postToArtifactory("https://artifacts.imanage.com/artifactory/commons-set-local/DeployScripts/Alpha/" + Commit + ".zip", pwd() + "/server.zip")
+                    dir('CI_Build') {					
+						postToArtifactory("https://artifacts.imanage.com/artifactory/commons-set-local/DeployScripts/Alpha/" + Commit + "/server.zip", pwd() + "/server.zip")
 					}
 
 				if (Branch =~'^PR-*')
 				{
 					githubNotify account: 'markmaxwell19', context: 'continuous-integration/RESTAPI', credentialsId: 'github-accessToken', description: 'Click Details to manually start the test.', gitApiUrl: '', repo: 'random-test', sha: "${Commit}", status: 'PENDING', targetUrl: "http://localhost:8080/job/10.2.0%20CI%20Test/buildWithParameters?PRNumber=${Branch.replace('PR-','')}&CommitNumber=${Commit}"
-					sleep 30
+					/*
 					triggerRemoteJob auth: NoneAuth(), job: 'http://localhost:8080/job/10.2.0%20CI%20Test/', maxConn: 1, parameters: """PRNumber=${Branch.replace('PR-','')}
 CommitNumber=${Commit}""", shouldNotFailBuild: true, token: 'Litigation11', blockBuildUntilComplete: false
+*/
 				}
 				else
 				{
 					println "Triggering RESTAPI Test on Branch Merge"
+					/*
 					triggerRemoteJob auth: NoneAuth(), job: 'http://localhost:8080/job/10.2.0%20CI%20Test/', maxConn: 1, parameters: """PRNumber=${Branch}
 CommitNumber=${Commit}""", shouldNotFailBuild: true, token: 'Litigation11', blockBuildUntilComplete: false
+*/
 				}
 			}
 			
