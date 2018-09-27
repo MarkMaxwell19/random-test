@@ -36,17 +36,11 @@ node {
                     ]
                 ) {
                     dir('work-server/iserver/app/buildInstaller') {
-                        build_cmd = "" +
-                            """ant resolve setResourceProperties CIBuild """ +
-                            """-Dvs.path64.2017="C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\Common7\\IDE\\\\" """ +
-                            """-DskipMobility2=1"""
-                        echo "build_cmd=${build_cmd}"
-                        bat build_cmd
+  
                     }
                 }
 		    
                     dir('CIBuild') {					
-						postToArtifactory("https://artifacts.imanage.com/artifactory/commons-set-local/DeployScripts/Alpha/" + Commit + ".zip", pwd() + "/server.zip")
 					}
 
 				if (Branch =~'^PR-*')
