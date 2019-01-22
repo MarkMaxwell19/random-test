@@ -10,7 +10,6 @@ node {
             }
 	    
 			stage('Parallel Stage') {
-				failFast true
 				parallel {
 					stage('Initialize Rest-CI') {
 						steps {
