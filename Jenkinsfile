@@ -8,15 +8,30 @@ node {
             stage ("Clean Workspace") {
                 deleteDir()
             }
-            
-            stage ("Clone sources") {
-                dir('work-server') {
-		}
-            } 
-
-            stage ("Build") {
-		    
-	    }
+	    
+	    stage('Parallel Stage') {
+            failFast true
+            parallel {
+                stage('Initialize Rest-CI') {
+                    steps {
+                        echo "Initialize Rest-CI"
+                    }
+                }
+                stage('Build Code') {
+                    stages {
+                        stage('Cloning Sources') {
+                            steps {
+                                echo "Cloned Sources"
+                            }
+                        }
+                        stage('Build') {
+                            steps {
+                                echo "Building"
+                            }
+                        }
+                    }
+                }
+            }
         } catch (e) {
             currentBuild.result = "FAILED"
             throw e
