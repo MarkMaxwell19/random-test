@@ -21,7 +21,6 @@ node {
 	    }
         } catch (e) {
             currentBuild.result = "FAILED"
-            notify('danger', 'FAILED')
             throw e
         }
     }
