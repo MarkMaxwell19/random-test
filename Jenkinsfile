@@ -8,29 +8,51 @@ node {
             stage ("Clean Workspace") {
                 deleteDir()
             }
-	    
-			stage('Parallel Stage') {
-				parallel {
-					stage('Initialize Rest-CI') {
-						steps {
+			stage("Initialize and Build") {
+				parallel(
+					RestCI: {
+						stage('Initialize Rest-CI') {
+							powershell label: '', script: 'start-sleep 10; write-host (get-date)'
 							echo "Initialize Rest-CI"
 						}
-					}
-					stage('Build Code') {
-						stages {
-							stage('Cloning Sources') {
-								steps {
-									echo "Cloned Sources"
-								}
+					},
+					Builder: {
+						stage('Clone sources') {
+							echo "Cloning sources"
+							powershell label: '', script: 'write-host (get-date)'
+						}
+					},
+					failFast: true
+				)
+			}
+			stage('Build') {
+				echo "Building"
+				powershell label: '', script: 'write-host (get-date)'
+			}
+			Stage("Test") {
+				parallel(
+					RestCI: {
+						dir('') {
+							try {
+								echo "Running Rest CI Tests"
+								powershell label: '', script: 'start-sleep 10; write-host (get-date)'
+							} finally {
+								echo "Captured Rest CI Tests"
 							}
-							stage('Build') {
-								steps {
-									echo "Building"
-								}
+							
+						}
+					},
+					PythonUT: {
+						dir('') {
+							try{
+								echo "Running Python Unit Tests"
+								powershell label: '', script: 'start-sleep 10; write-host (get-date)'
+							} finally {
+								echo "Captured Python Tests"
 							}
 						}
 					}
-				}	
+				)
 			}
         } catch (e) {
             currentBuild.result = "FAILED"
