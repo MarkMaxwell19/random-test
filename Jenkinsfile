@@ -4,8 +4,6 @@ node {
     // needed for a single build. The downside is that we can never run concurrent builds on this worker
     // and the workspaces are lost after the next build runs
     ws("C:\\wsws") {
-        notify('warning', "STARTED")
-
         try {
             stage ("Clean Workspace") {
                 deleteDir()
